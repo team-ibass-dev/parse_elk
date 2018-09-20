@@ -1,0 +1,23 @@
+Value Required ID (\d+)
+Value PORT ([EP]\S+)
+Value STATUS (up|down\*|down)
+Value CONSISTENCY (\S+)
+Value REASON (success|Consistency Check Not)
+Value List ACTIVE_VLAN ([\d+\-\.]*)
+
+Start
+  ^\d+ \S+ -> Continue.Record
+  ^${ID}\s${PORT}\s${STATUS}\s${CONSISTENCY}\s${REASON}\s${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue
+  ^\d+\s\S+\s\S+\s\S+\s(success|Not Consistency Check Not)?\s[\d+\-]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,[\d+\-\.]*,${ACTIVE_VLAN} -> Continue

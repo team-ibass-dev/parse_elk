@@ -1,0 +1,21 @@
+#Configuration d'elasticsearch
+#----- cette partie concerne elasticsearch--------------------------
+
+
+hosts=http://localhost:9200
+user=
+password=
+
+#--------------------------fin--------------------------------------
+
+#Configuration de logstash
+#----- cette partie concerne logstash-------------------------------
+
+
+path_run_conf_file=/opt/logstash/bin/logstash
+path_stop=/etc/init.d/logstash
+
+#--------------------------fin--------------------------------------
+
+#------ configuration du projet-------------------------------------
+projet_name=parse_elk
