@@ -13,9 +13,10 @@ from modules import generer_json_file as g
 from modules import parse_cisco_command_using_template as p
 from modules import parse_show_interface_trunk_cisco_nxos_ as thk
 from modules import parse_vpc_status_nxos as vpc
-
+from modules import add_hostname as add
 
 def parser_fichier(path_src, switch_type):
+    # print("dsl")
     # path_src=r""+path_src.encode('utf8')
     if os.path.exists("temp"):
         os.system("rm -rf temp")
@@ -29,38 +30,46 @@ def parser_fichier(path_src, switch_type):
     file_name = os.path.splitext(file_name)[0]
     file_name = file_name.lower()
     liste_templates = os.listdir("templates/" + switch_type + "/principaux")
+
     for t in liste_templates:
         template_name = os.path.splitext(t)[0]
         if template_name[1] != ".py":
             parse_result = list()
             titres = list()
             parse_result, titres = p.parse_cisco_command(path_src, "templates/" + switch_type + "/principaux/" + t)
+            titres.append("hostname")
+            parse_result=add.add_hostname(parse_result,file_name)
+            # add.add_hostname(parse_result,"sd")
             if type(parse_result).__name__ == 'list' and len(parse_result) > 0:
                 if not os.path.exists("results/" + file_name):
                     os.mkdir("results/" + file_name)
                 g.Generer_json_file(parse_result, titres, "results/" + file_name, template_name)
                 gcf.Generate_json_file_conf2("/parse_elk/results/" + file_name + "/" + template_name + ".json",
-                                            "temp", file_name + "_" + template_name, "doc", "l",file_name + "_" + template_name,file_name + "_" + template_name)
+                                            "temp", switch_type+"_"+ template_name, "doc", "l",file_name + "_" + template_name,file_name + "_" + template_name)
                 #exe.Execute_conf_file_using_logstash("results/" + file_name + "/" + template_name + ".conf")
     if switch_type == "cisco_nxos":
         file_name = os.path.basename(path_src)
         file_name = os.path.splitext(file_name)[0]
         file_name = file_name.lower()
         parse_result, titres = thk.parse_show_interface_trunk_cisco_nxos(path_src)
+        titres.append("hostname")
+        parse_result = add.add_hostname(parse_result, file_name)
         if type(parse_result).__name__ == 'list' and len(parse_result) > 0:
             if not os.path.exists("results/" + file_name):
                 os.mkdir("results/" + file_name)
             g.Generer_json_file(parse_result, titres, "results/" + file_name, "show_interfaces_trunk")
             gcf.Generate_json_file_conf2("/parse_elk/results/" + file_name + "/show_interfaces_trunk.json",
-                                        "temp", file_name + "_show_interfaces_thrunk", "doc", "l",file_name + "_show_interfaces_thrunk",file_name + "_show_interfaces_thrunk")
+                                        "temp", switch_type+"_"+ "show_interfaces_thrunk", "doc", "l",file_name + "_show_interfaces_thrunk",file_name + "_show_interfaces_thrunk")
            # exe.Execute_conf_file_using_logstash("results/" + file_name + "/show_interfaces_thrunk.conf")
         parse_result, titres = vpc.parse_vpc_status_nxos(path_src)
+        titres.append("hostname")
+        parse_result = add.add_hostname(parse_result, file_name)
         if type(parse_result).__name__ == 'list' and len(parse_result) > 0:
             if not os.path.exists("results/" + file_name):
                 os.mkdir("results/" + file_name)
             g.Generer_json_file(parse_result, titres, "results/" + file_name, "show_vpc")
             gcf.Generate_json_file_conf2("/parse_elk/results/" + file_name + "/show_vpc.json", "temp",
-                                        file_name + "_show_vpc", "doc", "l",file_name + "_show_vpc",file_name + "_show_vpc")
+                                         switch_type + "_" + "show_vpc", "doc", "l",file_name + "_show_vpc",file_name + "_show_vpc")
             #exe.Execute_conf_file_using_logstash("results/" + file_name + "/show_vpc.conf")
     exe.Execute_conf_file_using_logstash("'temp/*.conf'")
 
@@ -91,32 +100,38 @@ def parser_fichiers_repertoire(path_repertoire, switch_type):
                 titres = list()
                 parse_result, titres = p.parse_cisco_command(path_repertoire + "/" + f,
                                                              "templates/" + switch_type + "/principaux/" + t)
+                titres.append("hostname")
+                parse_result = add.add_hostname(parse_result, file_name)
                 if type(parse_result).__name__ == 'list' and len(parse_result) > 0:
                     if not os.path.exists("results/" + file_name):
                         os.mkdir("results/" + file_name)
                     g.Generer_json_file(parse_result, titres, "results/" + file_name, template_name)
                     gcf.Generate_json_file_conf2("/parse_elk/results/" + file_name + "/" + template_name + ".json",
-                                                "temp", file_name + "_" + template_name, "doc", "l",file_name + "_" + template_name,file_name + "_" + template_name)
+                                                "temp", switch_type+"_"+template_name, "doc", "l",file_name + "_" + template_name,file_name + "_" + template_name)
                     #exe.Execute_conf_file_using_logstash("results/" + file_name + "/" + template_name + ".conf")
     if switch_type == "cisco_nxos":
         for f in liste_fichiers:
             file_name = os.path.splitext(f)[0]
             file_name = file_name.lower()
             parse_result, titres = thk.parse_show_interface_trunk_cisco_nxos(path_repertoire + "/" + f)
+            titres.append("hostname")
+            parse_result = add.add_hostname(parse_result, file_name)
             if type(parse_result).__name__ == 'list' and len(parse_result) > 0:
                 if not os.path.exists("results/" + file_name):
                     os.mkdir("results/" + file_name)
                 g.Generer_json_file(parse_result, titres, "results/" + file_name, "show_interfaces_thrunk")
                 gcf.Generate_json_file_conf2("/parse_elk/results/" + file_name + "/show_interfaces_thrunk.json",
-                                            "temp", file_name + "show_interfaces_trunk", "doc", "l",file_name + "_thrunk",file_name + "_show_interfaces_thrunk")
+                                            "temp", switch_type+"_"+ "show_interfaces_thrunk", "doc", "l",file_name + "_thrunk",file_name + "_show_interfaces_thrunk")
                 #exe.Execute_conf_file_using_logstash("results/" + file_name + "/" + file_name + "show_interfaces_thrunk.conf")
             parse_result, titres = vpc.parse_vpc_status_nxos(path_repertoire + "/" + f)
+            titres.append("hostname")
+            parse_result = add.add_hostname(parse_result, file_name)
             if type(parse_result).__name__ == 'list' and len(parse_result) > 0:
                 if not os.path.exists("results/" + file_name):
                     os.mkdir("results/" + file_name)
                 g.Generer_json_file(parse_result, titres, "results/" + file_name, "show_vpc")
                 gcf.Generate_json_file_conf2("/parse_elk/results/" + file_name + "/show_vpc.json",
-                            "temp", file_name + "show_vpc", "doc", "l",file_name + "_show_vpc",file_name + "_show_vpc")
+                            "temp", switch_type+"_" + "show_vpc", "doc", "l",file_name + "_show_vpc",file_name + "_show_vpc")
                 #exe.Execute_conf_file_using_logstash("results/" + file_name + "/show_vpc.conf")
 
     exe.Execute_conf_file_using_logstash("'temp/*.conf'")
